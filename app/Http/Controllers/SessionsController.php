@@ -26,7 +26,7 @@ class SessionsController extends Controller
         return view('sessions.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request)      //登陆逻辑
     {
         $this->validate($request, [
             'email' => 'required|email|max:255',

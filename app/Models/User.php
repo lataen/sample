@@ -48,5 +48,16 @@ namespace App\Models {
         {
             $this->notify(new ResetPassword($token));
         }
+
+        public function statuses()
+        {
+            return $this->hasMany(Status::class);
+        }
+
+        public function feed()
+        {
+            return $this->statuses()
+                ->orderBy('created_at', 'desc');
+        }
     }
 }

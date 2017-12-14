@@ -18,14 +18,24 @@ class UsersController extends Controller
     }
 
 
+    public function index()
+    {
+        $users = User::paginate(10);
+        return view('users.index', compact('users'));
+    }
+
     public function create()
     {
         return view('users.create');
     }
 
+
     public function show(User $user)
     {
-        return view('users.show', compact('user'));
+        $statuses = $user->statuses()
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        return view('users.show', compact('user', 'statuses'));
     }
 
     protected function sendEmailConfirmationTo($user)
@@ -100,12 +110,6 @@ class UsersController extends Controller
         return redirect()->route('users.show', $user->id);
     }
 
-    public function index()
-    {
-        $users = User::paginate(10);
-        return view('users.index', compact('users'));
-    }
-
     public function destroy(User $user)
     {
         $this->authorize('destroy', $user);
@@ -113,4 +117,5 @@ class UsersController extends Controller
         session()->flash('success', '成功删除用户！');
         return back();
     }
+
 }
